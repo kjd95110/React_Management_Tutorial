@@ -21,36 +21,30 @@ const styles = theme =>({
   }
 })
 
-const customers=[
-  {
-    'id':1,
-    'image':'https://placeimg.com/64/64/1',
-    'name':'홍길동1',
-    'birthday':'961222',
-    'gender':'남자',
-    'job':'대학생'
-  },
-  {
-    'id':2,
-    'image':'https://placeimg.com/64/64/2',
-    'name':'홍길동2',
-    'birthday':'971222',
-    'gender':'여자',
-    'job':'대학생'
-  },
-  {
-    'id':3,
-    'image':'https://placeimg.com/64/64/3',
-    'name':'홍길동3',
-    'birthday':'981222',
-    'gender':'여자',
-    'job':'디자이너'
-  }
-]
+
 
 
 class App extends Component {
 ///* 맵을 사용할때는 고유한 키값을 줘야한다.
+
+state = {
+  customers: ""
+}
+
+componentDidMount(){
+  this.callApi()
+  
+  //받아와서...
+  .then(res => this.setState({customers: res}))
+  .catch(err => console.log(err));
+}
+
+callApi = async () => {
+  const response = await fetch('/api/customers');
+  const body = await response.json();
+  return body;
+}
+
   render() {
     const { classes } = this.props;  // 새로 추가된  style이 적용될수 있도록 classes 변수를 하나만들어서 
     return (     
@@ -66,11 +60,10 @@ class App extends Component {
               <TableCell>직업</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-          { customers.map(c => {
-              return( <Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job}  ></Customer>  );
-            })  
-          }
+          <TableBody>          
+            {this.state.customers ? this.state.customers.map(c => { return( <Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job}  ></Customer>  );
+            }) : "" }
+          
          </TableBody>
         </Table>      
       </Paper>      
