@@ -35,6 +35,7 @@ handleFormSubmit = (e) => {
     this.addCustomer()
     .then((response) => {
         console.log(response.data);
+        this.props.stateRefresh();  //잘이해안됨...왜 여기에 넣어야 하나???
     })
 
     this.setState({
@@ -45,7 +46,9 @@ handleFormSubmit = (e) => {
         job:'',
         fileName: ''
     })
-    window.location.reload();  //데이터를 새로 받아오기위함.
+
+    //this.props.stateRefresh();
+  //  window.location.reload();  //데이터를 새로 받아오기위함 이며 아주 구시대적 방식.
 }
 
 addCustomer = () => {

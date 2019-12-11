@@ -33,9 +33,31 @@ const styles = theme =>({
 class App extends Component {
 ///* 맵을 사용할때는 고유한 키값을 줘야한다.
 
-state = {
-  customers: "",
-  completed: 0 
+// state = {
+//   customers: "",
+//   completed: 0 
+// }
+
+constructor(props){
+  super(props);
+  this.state={
+    customers: '',
+    completed: 0
+  }
+}
+
+stateRefresh = () => {
+  this.setState({
+    customers: '',
+    completed: 0
+  });
+
+  this.callApi()
+  
+  //componentDidMount()가 callApi를 호출(비동기적으로)하고 이결과를 받아와서...상태가 변화(setState)되고  React에서 이를감지하고 뷰가 재구성되기 [ render() ]때문에  화면에 보여지게되는것이다.
+  .then(res => this.setState({customers: res}))
+  .catch(err => console.log(err));
+
 }
 
 componentDidMount(){
@@ -86,7 +108,7 @@ progress = () => {
          </TableBody>
         </Table>      
       </Paper>
-      <CustomerAdd></CustomerAdd>
+      <CustomerAdd stateRefresh={this.stateRefresh}></CustomerAdd>
       </div>
     )
   }
