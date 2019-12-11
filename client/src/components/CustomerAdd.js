@@ -36,6 +36,16 @@ handleFormSubmit = (e) => {
     .then((response) => {
         console.log(response.data);
     })
+
+    this.setState({
+        file: null,
+        userName: '',
+        birthday: '',
+        gender: '',
+        job:'',
+        fileName: ''
+    })
+    window.location.reload();  //데이터를 새로 받아오기위함.
 }
 
 addCustomer = () => {

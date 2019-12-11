@@ -29,6 +29,9 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
+const multer = require('multer');
+const upload = multer({dest: './upload'}); //업로드 폴더를 설정한다.
+
 app.get('/api/customers', (req, res) => {
    //res.send();
    connection.query(
@@ -40,5 +43,25 @@ app.get('/api/customers', (req, res) => {
 
 });
 
+app.use('/image',express.static('./upload')); //사용자입장에서는 image폴더로 접근을 하는데 실제 upload 폴더와 매핑이 된다는 것임.
+app.post('/api/customers', upload.single('image'), (req,res) => {  // 사용자는  image라는 변수로 실제로 profill이미지의 bianry데이터를 우리서버로 전송하니까요 그것을 받아옵니다.
+  let sql = "INSERT INTO Customer VALUES (null, ?, ?, ?, ?, ?)";  //id는 자동증가
+  let image = '/image/' + req.file.filename;  //사용자는 image폴더경로로 접근해서 서버의 upload폴더의 image를 이용하는것.
+  let name = req.body.name;
+  let birthday = req.body.birthday;
+  let gender = req.body.gender;
+  let job = req.body.job;
+
+console.log(name,image,birthday,gender,job);
+
+  let params = [ image, name, birthday, gender, job];
+  connection.query(sql, params,
+    (err, rows, fields) => {
+      res.send(rows);
+      console.log(err);
+      console.log(rows);
+    }
+  );
+});
 
  app.listen(port, () => console.log(`Listening on port ${port}`));
