@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Customer from './components/Customer';
+import CustomerAdd from './components/CustomerAdd';
 import './App.css';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -60,7 +61,8 @@ progress = () => {
 
   render() {
     const { classes } = this.props;  // 새로 추가된  style이 적용될수 있도록 classes 변수를 하나만들어서 
-    return (     
+    return (
+      <div>     
       <Paper className={classes.root}>        
         <Table className={classes.table}>
           <TableHead>
@@ -83,7 +85,9 @@ progress = () => {
             </TableRow>
          </TableBody>
         </Table>      
-      </Paper>      
+      </Paper>
+      <CustomerAdd></CustomerAdd>
+      </div>
     )
   }
 }
