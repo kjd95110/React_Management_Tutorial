@@ -119,7 +119,8 @@ constructor(props){
   super(props);
   this.state={
     customers: '',
-    completed: 0
+    completed: 0,
+    searchKeyword: ''
   }
 }
 
@@ -127,7 +128,8 @@ constructor(props){
 stateRefresh = () => {
   this.setState({
     customers: '',
-    completed: 0
+    completed: 0 ,
+    searchKeyword: ''
   });
 
   this.callApi()
@@ -159,7 +161,31 @@ progress = () => {
 
 }
 
+handleValueChange = (e) => {
+  let nextState = {};
+  nextState[e.target.name] = e.target.value;
+  this.setState(nextState);
+}
+
+
   render() {
+    const filteredComponents = (data) => {
+      data = data.filter((c) => {
+         // console.log('myname is ' + c);
+        //  for(var key in c){
+        //   console.log("Attribute:" + key + " , value: " + c[key]);
+        // }
+
+        return c.NAME.indexOf(this.state.searchKeyword) > -1;         
+          
+      });
+
+      return data.map((c) => {
+          return <Customer stateRefresh={this.stateRefresh} key={c.id} id={c.id} image={c.image} name={c.NAME} birthday={c.birthday} gender={c.gender} job={c.job}></Customer>
+      });
+
+    };
+
     const { classes } = this.props;  // 새로 추가된  style이 적용될수 있도록 classes 변수를 하나만들어서 
     const cellList = ["번호","프로필이미지","이름","생년월일","성별","직업","설정"]
     return (
@@ -181,7 +207,10 @@ progress = () => {
                    classes={{
                       root: classes.inputRoot,
                       input: classes.inputInput,
-                    }}                    
+                    }}  
+                    name="searchKeyword"
+                    value={this.state.searchKeyword}
+                    onChange={this.handleValueChange}
                   />
                 </div>
               </Toolbar>
@@ -201,13 +230,15 @@ progress = () => {
             </TableRow>
           </TableHead>
           <TableBody>          
-            {this.state.customers ? this.state.customers.map(c => { return( <Customer  stateRefresh={this.stateRefresh} key={c.id} id={c.id} image={c.image} name={c.NAME} birthday={c.birthday} gender={c.gender} job={c.job}  ></Customer>  );
-            }) : "" }
-            <TableRow>
-              <TableCell colSpan="6" align="center">
-                <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed}></CircularProgress>
-              </TableCell>
-            </TableRow>
+            {
+              this.state.customers ? 
+              filteredComponents(this.state.customers) :            
+                  <TableRow>
+                    <TableCell colSpan="6" align="center">
+                      <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed}></CircularProgress>
+                    </TableCell>
+                  </TableRow>
+            }
          </TableBody>
         </Table>      
       </Paper>
