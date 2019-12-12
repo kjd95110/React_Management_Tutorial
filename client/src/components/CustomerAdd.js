@@ -29,6 +29,8 @@ handleValueChange = (e) => {
     this.setState(nextState);
 }
 
+
+//실제로 고객데이터가 새로 추가되었을때 
 handleFormSubmit = (e) => {
 
     e.preventDefault();
@@ -36,6 +38,8 @@ handleFormSubmit = (e) => {
     .then((response) => {
         console.log(response.data);
         this.props.stateRefresh();  //잘이해안됨...왜 여기에 넣어야 하나???
+        //부모에서 만든 App내의 함수를 props형태로 받아와 실행하는모습.
+        // App.js에서  <CustomerAdd stateRefresh={this.stateRefresh}></CustomerAdd>
     })
 
     this.setState({

@@ -38,6 +38,7 @@ class App extends Component {
 //   completed: 0 
 // }
 
+//생성자 처리
 constructor(props){
   super(props);
   this.state={
@@ -46,6 +47,7 @@ constructor(props){
   }
 }
 
+//상태를 초기화하고 고객목록을 다시호출하는 함수 생성
 stateRefresh = () => {
   this.setState({
     customers: '',
@@ -95,10 +97,11 @@ progress = () => {
               <TableCell>생년월일</TableCell>
               <TableCell>성별</TableCell>
               <TableCell>직업</TableCell>
+              <TableCell>설정</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>          
-            {this.state.customers ? this.state.customers.map(c => { return( <Customer key={c.id} id={c.id} image={c.image} name={c.NAME} birthday={c.birthday} gender={c.gender} job={c.job}  ></Customer>  );
+            {this.state.customers ? this.state.customers.map(c => { return( <Customer  stateRefresh={this.stateRefresh} key={c.id} id={c.id} image={c.image} name={c.NAME} birthday={c.birthday} gender={c.gender} job={c.job}  ></Customer>  );
             }) : "" }
             <TableRow>
               <TableCell colSpan="6" align="center">
